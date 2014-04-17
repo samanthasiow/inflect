@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir data
+[[ ! -d "data" ]] && mkdir data
 
 for prefix in train dtest etest; do
   for suffix in form tag lemma tree; do
