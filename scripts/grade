@@ -12,7 +12,7 @@ import sys
 from itertools import izip
 
 PARSER = argparse.ArgumentParser(description="Count lemmas and word forms")
-PARSER.add_argument("gold", type=str, default='data/dtest.form', help="gold file for word forms")
+PARSER.add_argument("-gold", type=str, default='data/dtest.form', help="gold file for word forms")
 args = PARSER.parse_args()
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout) 
