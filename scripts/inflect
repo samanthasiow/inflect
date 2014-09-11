@@ -25,20 +25,26 @@ args = PARSER.parse_args()
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout) 
 sys.stdin = codecs.getreader('utf-8')(sys.stdin) 
 
-# Build a model on the training data
-LEMMAS = defaultdict(defaultdict)
-if args.t:
-    def combine(a, b): return '%s.%s' % (a, b)
-    def utf8read(file): return codecs.open(file, 'r', 'utf-8')
-    for words, lemmas in izip(utf8read(combine(args.t, args.w)), utf8read(combine(args.t, args.l))):
-        for word, lemma in izip(words.rstrip().split(), lemmas.rstrip().split()):
-            LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
+def inflections(lemma):
+    if LEMMAS.has_key(lemma):
+        return sorted(LEMMAS[lemma].keys(), lambda x,y: cmp(LEMMAS[lemma][y], LEMMAS[lemma][x]))
+    return list(lemma)
 
 def best_inflection(lemma):
-    if LEMMAS.has_key(lemma):
-        return sorted(LEMMAS[lemma].keys(), lambda x,y: cmp(LEMMAS[lemma][y], LEMMAS[lemma][x]))[0]
-    return lemma
+    return inflections(lemma)[0]
 
-# Inflect STDIN
-for line in sys.stdin:
-    print ' '.join([best_inflection(x) for x in line.rstrip().split()])
+if __name__ == '__main__':
+
+    # Build a simple unigram model on the training data
+    LEMMAS = defaultdict(defaultdict)
+    if args.t:
+        def combine(a, b): return '%s.%s' % (a, b)
+        def utf8read(file): return codecs.open(file, 'r', 'utf-8')
+        # Build the LEMMAS hash, a two-level dictionary mapping lemmas to inflections to counts
+        for words, lemmas in izip(utf8read(combine(args.t, args.w)), utf8read(combine(args.t, args.l))):
+            for word, lemma in izip(words.rstrip().lower().split(), lemmas.rstrip().lower().split()):
+                LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
+
+    # Choose the most common inflection for each word and output them as a sentence
+    for line in sys.stdin:
+        print ' '.join([best_inflection(x) for x in line.rstrip().split()])
