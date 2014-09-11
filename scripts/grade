@@ -21,7 +21,7 @@ sys.stdin = codecs.getreader('utf-8')(sys.stdin)
 total = 0
 right = 0
 for line, gold in izip(sys.stdin, codecs.open(args.gold, 'r', 'utf-8')):
-    def equal(pair): return pair[0] == pair[1]
+    def equal(pair): return pair[0].lower() == pair[1].lower()
     compared = map(equal, izip(line.split(), gold.split()))
     right += sum(compared)
     total += len(compared)
