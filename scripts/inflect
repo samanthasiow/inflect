@@ -28,7 +28,7 @@ sys.stdin = codecs.getreader('utf-8')(sys.stdin)
 def inflections(lemma):
     if LEMMAS.has_key(lemma):
         return sorted(LEMMAS[lemma].keys(), lambda x,y: cmp(LEMMAS[lemma][y], LEMMAS[lemma][x]))
-    return list(lemma)
+    return [lemma]
 
 def best_inflection(lemma):
     return inflections(lemma)[0]
