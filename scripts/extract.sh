@@ -30,15 +30,19 @@ extract() {
 
   if [[ ! -s plain/$file.form ]]; then
     echo "building plain/$file.form"
-    python scripts/pull.py $file -tag form > plain/$file.form
+    python2.7 scripts/pull.py $file -tag form > plain/$file.form
   fi
   if [[ ! -s plain/$file.lemma ]]; then 
     echo "building plain/$file.lemma"
-    python scripts/pull.py $file -tag lemma > plain/$file.lemma
+    python2.7 scripts/pull.py $file -tag lemma > plain/$file.lemma
   fi
   if [[ ! -s plain/$file.tag ]]; then
     echo "building plain/$file.tag"
-    python scripts/pull.py $file -tag tag | perl -ane '@F = map {/(..)/} @F; print join(" ", @F), $/' > plain/$file.tag
+    python2.7 scripts/pull.py $file -tag tag | perl -ane '@F = map {/(..)/} @F; print join(" ", @F), $/' > plain/$file.tag
+  fi
+  if [[ ! -s plain/$file.tree]]; then
+    echo "building plain/$file.tree"
+    python2.7 scripts/pull_tree.py $file > plain/$file.tree
   fi
 }
 
