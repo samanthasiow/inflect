@@ -43,8 +43,9 @@ if __name__ == '__main__':
         # Build the LEMMAS hash, a two-level dictionary mapping lemmas to inflections to counts
         for words, lemmas in izip(utf8read(combine(args.t, args.w)), utf8read(combine(args.t, args.l))):
             for word, lemma in izip(words.rstrip().lower().split(), lemmas.rstrip().lower().split()):
-                LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
+                print 'lemma', lemma,'word',  word
+		LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
 
     # Choose the most common inflection for each word and output them as a sentence
     for line in sys.stdin:
-        print ' '.join([best_inflection(x) for x in line.rstrip().split()])
+         ' '.join([best_inflection(x) for x in line.rstrip().split()])
