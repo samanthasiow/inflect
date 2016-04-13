@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Outputs a fully inflected version of a lemmatized test set (provided on STDIN). 
+Outputs a fully inflected version of a lemmatized test set (provided on STDIN).
 If training data is provided, it will use a unigram model to select the form.
 
 usage: cat LEMMA_FILE | python inflect
@@ -22,8 +22,8 @@ PARSER.add_argument("-w", type=str, default="form", help="word file suffix")
 args = PARSER.parse_args()
 
 # Python sucks at UTF-8
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout) 
-sys.stdin = codecs.getreader('utf-8')(sys.stdin) 
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+sys.stdin = codecs.getreader('utf-8')(sys.stdin)
 
 def inflections(lemma):
     if LEMMAS.has_key(lemma):
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         for words, lemmas in izip(utf8read(combine(args.t, args.w)), utf8read(combine(args.t, args.l))):
             for word, lemma in izip(words.rstrip().lower().split(), lemmas.rstrip().lower().split()):
                 print 'lemma', lemma,'word',  word
-		LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
+		        LEMMAS[lemma][word] = LEMMAS[lemma].get(word,0) + 1
 
     # Choose the most common inflection for each word and output them as a sentence
     for line in sys.stdin:
