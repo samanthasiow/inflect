@@ -64,4 +64,26 @@ if __name__ == '__main__':
 
     # Choose the most common inflection for each word and output them as a sentence
     for line in sys.stdin:
-         print ' '.join([best_inflection(x, UNIGRAM_LEMMAS) for x in line.rstrip().split()])
+        # check i,i+1 for bigram:
+        # if doesn't exist:
+            # check i for unigram:
+            # i += 1
+        # skip i+1, move to i=i+2
+
+        idx = 0
+        lemmas = line.rstrip().split()
+        inflection_hyp = []
+        while idx < len(lemmas):
+            if idx < len(lemmas)-1:
+                bigram = (lemmas[idx],lemmas[idx+1])
+                if bigram in BIGRAM_LEMMAS:
+                    best_bigram_inflection = best_inflection(bigram, BIGRAM_LEMMAS)
+                    inflection_hyp.append(best_bigram_inflection[0])
+                    inflection_hyp.append(best_bigram_inflection[1])
+                    idx += 2
+                    continue
+            best_unigram_inflection = best_inflection(lemmas[idx], UNIGRAM_LEMMAS)
+            inflection_hyp.append(best_unigram_inflection)
+            idx += 1
+
+        print ' '.join(inflection_hyp)
