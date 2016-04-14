@@ -45,25 +45,23 @@ if __name__ == '__main__':
         # Build the UNIGRAM_LEMMAS hash, a two-level dictionary mapping lemmas to inflections to counts
         # combine 'words' from train.form, and 'lemmas' from train.lemma
         for words, lemmas in izip(utf8read(combine(args.t, args.w)), utf8read(combine(args.t, args.l))):
-            print 'words from train.form: ', words
-            print 'lemmas from train.lemma: ', lemmas
+            # print 'words from train.form: ', words
+            # print 'lemmas from train.lemma: ', lemmas
             lemmas_array = lemmas.rstrip().lower().split()
             words_array = words.rstrip().lower().split()
             for i,word in enumerate(words_array):
                 # might have an out of bounds error if len(lemmas) < len(words)
                 lemma = lemmas_array[i]
-                print '\t', 'word: ', word, ', lemma:', lemma
+                # print '\t', 'word: ', word, ', lemma:', lemma
                 UNIGRAM_LEMMAS[lemma][word] = UNIGRAM_LEMMAS[lemma].get(word,0) + 1
                 if i < len(words_array)-1:
                     lemma_bigram = (lemma, lemmas_array[i+1])
                     inflection_bigram = (word, words_array[i+1])
                     BIGRAM_LEMMAS[lemma_bigram][inflection_bigram] = BIGRAM_LEMMAS[lemma_bigram].get(inflection_bigram,0) + 1
 
-
-
-        for lemma in BIGRAM_LEMMAS:
-            print 'Lemma:' , lemma, ', inflections: ', BIGRAM_LEMMAS[lemma]
+        # for lemma in BIGRAM_LEMMAS:
+            # print 'Lemma:' , lemma, ', inflections: ', BIGRAM_LEMMAS[lemma]
 
     # Choose the most common inflection for each word and output them as a sentence
     for line in sys.stdin:
-         ' '.join([best_inflection(x, UNIGRAM_LEMMAS) for x in line.rstrip().split()])
+         print ' '.join([best_inflection(x, UNIGRAM_LEMMAS) for x in line.rstrip().split()])
