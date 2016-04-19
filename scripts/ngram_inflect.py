@@ -32,7 +32,7 @@ def inflections(lemma, lemmas):
 
 def best_inflection(lemma, lemmas):
     return inflections(lemma, lemmas)[0]
-    
+
 if __name__ == '__main__':
 
     # Build a simple unigram model on the training data

@@ -50,22 +50,30 @@ if __name__ == '__main__':
             lemmas_array = lemmas.rstrip().lower().split()
             words_array = words.rstrip().lower().split()
             for i,word in enumerate(words_array):
+                # might have an out of bounds error if len(lemmas) < len(words)
                 lemma = lemmas_array[i]
+                # print '\t', 'word: ', word, ', lemma:', lemma
                 UNIGRAM_LEMMAS[lemma][word] = UNIGRAM_LEMMAS[lemma].get(word,0) + 1
-                # get bigram
                 if i < len(words_array)-1:
                     lemma_bigram = (lemma, lemmas_array[i+1])
                     inflection_bigram = (word, words_array[i+1])
                     BIGRAM_LEMMAS[lemma_bigram][inflection_bigram] = BIGRAM_LEMMAS[lemma_bigram].get(inflection_bigram,0) + 1
 
+        # for lemma in BIGRAM_LEMMAS:
+            # print 'Lemma:' , lemma, ', inflections: ', BIGRAM_LEMMAS[lemma]
+
     # Choose the most common inflection for each word and output them as a sentence
     for line in sys.stdin:
+        # check i,i+1 for bigram:
+        # if doesn't exist:
+            # check i for unigram:
+            # i += 1
+        # skip i+1, move to i=i+2
 
         idx = 0
         lemmas = line.rstrip().split()
         inflection_hyp = []
         while idx < len(lemmas):
-            # check bigram
             if idx < len(lemmas)-1:
                 bigram = (lemmas[idx],lemmas[idx+1])
                 if bigram in BIGRAM_LEMMAS:
@@ -74,7 +82,6 @@ if __name__ == '__main__':
                     inflection_hyp.append(best_bigram_inflection[1])
                     idx += 2
                     continue
-            # check unigram if !bigram
             best_unigram_inflection = best_inflection(lemmas[idx], UNIGRAM_LEMMAS)
             inflection_hyp.append(best_unigram_inflection)
             idx += 1
